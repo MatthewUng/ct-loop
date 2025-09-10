@@ -2,6 +2,7 @@
 local M = {}
 
 -- State stores the following:
+-- cmd: the command to be repeatedly called
 -- buf: bufnr of the main terminal buffer
 -- job_id: the associated job_id
 M.state = {}
@@ -49,13 +50,18 @@ function M.set_command(cmd)
     M.state.command = cmd
 end
 
+-- Runs the save command in the companion terminal.
+-- If no command is provided, just open the companion terminal.
 function M.run_command()
     create_term_if_not_exists()
     local job_id = M.state.job_id
     local cmd = M.state.command
-    vim.fn.chansend(job_id, cmd .. '\n')
+    if cmd ~= nil and cmd ~= "" then
+        vim.fn.chansend(job_id, cmd .. '\n')
+    else
+        vim.cmd("startinsert")
+    end
 end
-
 
 
 return M
