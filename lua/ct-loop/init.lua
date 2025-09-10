@@ -50,6 +50,11 @@ function M.set_command(cmd)
     M.state.command = cmd
 end
 
+function M.open_companion()
+    create_term_if_not_exists()
+    vim.cmd("startinsert")
+end
+
 -- Runs the save command in the companion terminal.
 -- If no command is provided, just open the companion terminal.
 function M.run_command()
